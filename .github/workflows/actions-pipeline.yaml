@@ -1,0 +1,30 @@
+name: Sample CI pipeline for Java
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+    branches:
+    - main
+
+jobs:
+  build:
+    runs-on: '${{ matrix.os }}'
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+        java-version:
+          - '8'
+        java-distribution:
+          - 'zulu'
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Set up ${{ matrix.java-distribution }} OpenJDK version ${{ matrix.java-version }}'
+        uses: actions/setup-java@v2
+        with:
+          distribution: '${{ matrix.java-distribution }}'
+          java-version: '${{ matrix.java-version }}'
+      - name: Display Java version
+        run: java -version
